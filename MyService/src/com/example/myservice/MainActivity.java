@@ -2,11 +2,8 @@ package com.example.myservice;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -29,8 +26,6 @@ public class MainActivity extends Activity {
 
         Button btnStart = (Button)findViewById(R.id.button00);
         Button btnStop = (Button)findViewById(R.id.Button01);
-        Button btnBind = (Button)findViewById(R.id.Button02);
-        Button btnUnbind = (Button)findViewById(R.id.Button03);
          
         //定义点击监听器
         OnClickListener ocl = new OnClickListener() {
@@ -50,14 +45,6 @@ public class MainActivity extends Activity {
                     //停止服务
                     stopService(intent);
                     break;
-                case R.id.Button02:
-                    //绑定服务
-                    bindService(intent, conn, Context.BIND_AUTO_CREATE);
-                    break;
-                case R.id.Button03:
-                    //解绑服务
-                    unbindService(conn);
-                    break;
                 }
             }
 
@@ -66,28 +53,9 @@ public class MainActivity extends Activity {
          //绑定点击监听
         btnStart.setOnClickListener(ocl);
         btnStop.setOnClickListener(ocl);
-        btnBind.setOnClickListener(ocl);
-        btnUnbind.setOnClickListener(ocl);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 	
     //定义服务链接对象
     final ServiceConnection conn = new ServiceConnection() {
@@ -95,14 +63,12 @@ public class MainActivity extends Activity {
         @Override
         public void onServiceDisconnected(ComponentName name) 
         {
-			Toast.makeText(MainActivity.this,"ServiceMain onSeviceDisconnected", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "ServiceMain onSeviceDisconnected");
         }
          
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) 
         {
-            Toast.makeText(MainActivity.this, "ServiceMain onServiceConnected",Toast.LENGTH_SHORT).show();
             Log.e(TAG, "ServiceMain onServiceConnected");
         }
     };

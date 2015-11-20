@@ -12,39 +12,19 @@
         android:id="@+id/button00"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/Button01"
-        android:layout_alignLeft="@+id/Button02"
-        android:layout_alignRight="@+id/Button01"
-        android:layout_marginBottom="49dp"
+        android:layout_above="@+id/Button01"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="83dp"
         android:text="Start Service" />
 
     <Button
         android:id="@+id/Button01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Button03"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/Button03"
-        android:layout_marginTop="139dp"
+        android:layout_alignLeft="@+id/button00"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/button00"
+        android:layout_marginBottom="179dp"
         android:text="Stop Service" />
-
-    <Button
-        android:id="@+id/Button02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/Button03"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:text="Bind Service" />
-
-    <Button
-        android:id="@+id/Button03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/Button02"
-        android:layout_marginLeft="20dp"
-        android:text="Unbind Service" />
 
 </RelativeLayout>
