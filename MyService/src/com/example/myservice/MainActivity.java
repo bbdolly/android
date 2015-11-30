@@ -21,20 +21,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT).show();
-		Log.e(TAG, "MainActivity");
-
         Button btnStart = (Button)findViewById(R.id.button00);
         Button btnStop = (Button)findViewById(R.id.Button01);
          
-        //定义点击监听器
         OnClickListener ocl = new OnClickListener() {
              
 			@Override
 			public void onClick(View v) 
 			{
-                //显示指定  intent所指的对象是个   service
-				
                 Intent intent = new Intent(MainActivity.this,ServiceMain.class);
                 switch(v.getId()){
                 case R.id.button00:

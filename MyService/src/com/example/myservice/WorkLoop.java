@@ -12,6 +12,9 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Toast;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WorkLoop extends HandlerThread implements Callback
 {
@@ -23,9 +26,29 @@ public class WorkLoop extends HandlerThread implements Callback
 	@Override
 	public boolean handleMessage(Message msg)
 	{
-		sendSwipe(0,0,500,500);
 		String josn = (String) msg.obj;
 		Log.e("XUE", "handleMessage:"+josn);
+		
+		try
+		{
+		JSONObject jsonobj = new JSONObject(josn);   
+	    String func = jsonobj.getString("func");   
+	    
+	    switch(func)
+	    {
+	    case "swipe":
+	    	int x1 = jsonobj.getInt("x1");
+	    	int y1 = jsonobj.getInt("y1");
+	    	int x2 = jsonobj.getInt("x2");
+	    	int y2 = jsonobj.getInt("y2");
+			sendSwipe(x1,y1,x2,y2);
+	    	break;
+	    }
+		}
+		catch(JSONException e)
+		{
+			Log.e("XUE", e.getMessage());
+		}
 		return false;
 	}
 
