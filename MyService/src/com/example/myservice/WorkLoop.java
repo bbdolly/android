@@ -1,5 +1,8 @@
 package com.example.myservice;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.os.Handler.Callback;
@@ -29,25 +32,47 @@ public class WorkLoop extends HandlerThread implements Callback
 		String josn = (String) msg.obj;
 		Log.e("XUE", "handleMessage:"+josn);
 		
-		try
-		{
-		JSONObject jsonobj = new JSONObject(josn);   
-	    String func = jsonobj.getString("func");   
-	    
-	    switch(func)
-	    {
-	    case "swipe":
-	    	int x1 = jsonobj.getInt("x1");
-	    	int y1 = jsonobj.getInt("y1");
-	    	int x2 = jsonobj.getInt("x2");
-	    	int y2 = jsonobj.getInt("y2");
-			sendSwipe(x1,y1,x2,y2);
-	    	break;
-	    }
-		}
-		catch(JSONException e)
-		{
-			Log.e("XUE", e.getMessage());
+		Pattern pattern = Pattern.compile("\\{.*?\\}");
+		Matcher matcher = pattern.matcher(josn);
+		while(matcher.find())
+		{		
+			try
+			{
+				Log.e("XUE", "LINE"+matcher.group());
+				JSONObject jsonobj = new JSONObject(matcher.group());   
+			    String func = jsonobj.getString("func");   			    
+			    switch(func)
+			    {
+				    case "down":
+				    {
+				    	int x = jsonobj.getInt("x");
+				    	int y = jsonobj.getInt("y");
+				    	long now = SystemClock.uptimeMillis();
+				    	injectPointerEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_DOWN, x, y, 0));
+				    	break;
+				    }
+				    case "move":
+				    {
+				    	int x = jsonobj.getInt("x");
+				    	int y = jsonobj.getInt("y");
+				    	long now = SystemClock.uptimeMillis();
+				    	injectPointerEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_MOVE, x, y, 0));
+				    	break;
+				    }
+				    case "up":
+				    {
+				    	int x = jsonobj.getInt("x");
+				    	int y = jsonobj.getInt("y");
+				    	long now = SystemClock.uptimeMillis();
+				    	injectPointerEvent(MotionEvent.obtain(now, now, MotionEvent.ACTION_UP, x, y, 0));
+				    	break;
+				    }
+			    }
+			}
+			catch(JSONException e)
+			{
+				Log.e("XUE", e.getMessage());
+			}
 		}
 		return false;
 	}
@@ -72,14 +97,12 @@ public class WorkLoop extends HandlerThread implements Callback
 
 	private void injectKeyEvent(KeyEvent event)
 	{
-		Log.i("XUE", "InjectKeyEvent: " + event);
 		InputManager.getInstance().injectInputEvent(event, InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH);
 	}
 
 	private void injectPointerEvent(MotionEvent event)
 	{
 		event.setSource(InputDevice.SOURCE_TOUCHSCREEN);
-		Log.i("XUE", "InjectPointerEvent: " + event);
 		InputManager.getInstance().injectInputEvent(event, InputManager.INJECT_INPUT_EVENT_MODE_WAIT_FOR_FINISH);
 	}
 

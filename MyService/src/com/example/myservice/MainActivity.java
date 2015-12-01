@@ -10,11 +10,24 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private static String TAG = "MainActivity";
+    @Override
+	protected void onResume() 
+    {
+    	super.onResume();
+        EditText output = (EditText)findViewById(R.id.editText1);
+		if (ServiceMain.isRun) 
+		{
+			output.setText("Runing...");
+		} else 
+		{
+			output.setText("stop!");
+		}
+    }
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +36,7 @@ public class MainActivity extends Activity {
 		
         Button btnStart = (Button)findViewById(R.id.button00);
         Button btnStop = (Button)findViewById(R.id.Button01);
-         
+		
         OnClickListener ocl = new OnClickListener() {
              
 			@Override
@@ -32,38 +45,17 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this,ServiceMain.class);
                 switch(v.getId()){
                 case R.id.button00:
-                    //开始服务
                     startService(intent);
                     break;
                 case R.id.Button01:
-                    //停止服务
                     stopService(intent);
                     break;
                 }
             }
-
         };
          
          //绑定点击监听
         btnStart.setOnClickListener(ocl);
         btnStop.setOnClickListener(ocl);
 	}
-
-
-	
-    //定义服务链接对象
-    final ServiceConnection conn = new ServiceConnection() {
-         
-        @Override
-        public void onServiceDisconnected(ComponentName name) 
-        {
-            Log.e(TAG, "ServiceMain onSeviceDisconnected");
-        }
-         
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) 
-        {
-            Log.e(TAG, "ServiceMain onServiceConnected");
-        }
-    };
 }

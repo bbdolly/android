@@ -9,12 +9,15 @@ import android.widget.Toast;
 
 public class ServiceMain extends Service
 {
-	WorkLoop _loop;
-	UdpHelper _udp;
+	private WorkLoop _loop;
+	private UdpHelper _udp;
+	
+	static public boolean isRun = false;
 	
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+		isRun = true;
         Toast.makeText(this, "ServiceMain start...", Toast.LENGTH_SHORT).show();
         
         _loop = new WorkLoop("QAZWSX");
@@ -34,7 +37,7 @@ public class ServiceMain extends Service
 		
 		super.onDestroy();
 		Toast.makeText(this, "ServiceMain stop!", Toast.LENGTH_SHORT).show();
-		
+		isRun = false;
 	}
 
 	// 其他对象通过bindService 方法通知该Service时该方法被调用
