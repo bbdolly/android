@@ -30,7 +30,28 @@ LOCAL_SHARED_LIBRARIES := \
     libui \
     libgui
     
-LOCAL_SRC_FILES := screenshot.cpp
+LOCAL_SRC_FILES := screencap.cpp
+
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_MODULE           := screencap
+
+include $(BUILD_EXECUTABLE)
+
+################################################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE_TAGS := 
+LOCAL_CFLAGS := -g -O0 
+LOCAL_C_INCLUDES := \
+	external/zlib \
+	external 
+
+LOCAL_SHARED_LIBRARIES := libcutils libz liblog
+LOCAL_STATIC_LIBRARIES := libpng
+    
+LOCAL_SRC_FILES := screenshot.c
 
 LOCAL_MODULE_TAGS := optional
 
