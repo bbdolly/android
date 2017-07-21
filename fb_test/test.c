@@ -44,7 +44,7 @@ int openfb()
 }
 
 int main() {
-
+	char data0[]={0x00,0x00,0xff,0xff};
 	char data1[]={0xff,0xff,0xff,0xff,0x00,0x00,0x00,0x00};
 	char data2[]={0x00,0x00,0x00,0x00,0xff,0xff,0xff,0xff};
 	char *fbp = 0;
@@ -61,11 +61,6 @@ int main() {
 	printf("The framebuffer device was mapped to memory successfully.\n");
 
 
-//	for(x=0;x<vinfo.yres*vinfo.xres;x++)
-//	{
-//		memcpy(fbp+x*4,data1,4);
-//	}
-
 	for(y=0;y<vinfo.yres;y++)
 	{
 		for(x=0;x<vinfo.xres/2;x++)
@@ -80,6 +75,12 @@ int main() {
 			}
 		}
 	}
+
+	for (x = 0; x < vinfo.yres * vinfo.xres; x++)
+	{
+		memcpy(fbp + x * 4, data0, 4);
+	}
+
 
 	//clean framebuffer
 	munmap(fbp, screensize);
